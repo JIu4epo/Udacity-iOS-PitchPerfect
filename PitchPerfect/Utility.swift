@@ -7,7 +7,9 @@
 //
 
 import UIKit
+    func changeContentModeForSmallDevices(forButton: UIButton){
+        forButton.contentMode = .center
+        forButton.imageView?.contentMode = .scaleAspectFit
+    }
 
-class Utility: NSObject {
 
-}

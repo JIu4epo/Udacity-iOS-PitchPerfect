@@ -17,6 +17,8 @@ class PlaySoundsViewController: UIViewController {
     var audioPlayerNode: AVAudioPlayerNode!
     var stopTimer: Timer!
     
+    enum ButtonType: Int { case slow = 0, fast, highPitch, lowPitch, echo, reverb}
+    
     
     //MARK: Outlets
     @IBOutlet weak var slowButton: UIButton!
@@ -29,11 +31,25 @@ class PlaySoundsViewController: UIViewController {
     
     //MARK: Actions
     @IBAction func playSoundForButton(_ sender: UIButton){
-        print("play sound button pressed")
-    }
+        switch(ButtonType(rawValue: sender.tag)!) {
+        case .slow:
+            playSound(rate: 0.5)
+        case .fast:
+            playSound(rate: 1.5)
+        case .highPitch:
+            playSound(pitch: 1000)
+        case .lowPitch:
+            playSound(pitch: -1000)
+        case .echo:
+            playSound(echo: true)
+        case .reverb:
+            playSound(reverb: true)
+        }
+        
+        configureUI(.playing)    }
     
     @IBAction func stopButtonPressed(_ sender: AnyObject){
-        print("stop audio button pressed")
+        stopAudio()
     }
     
     override func viewDidLoad() {
@@ -45,24 +61,19 @@ class PlaySoundsViewController: UIViewController {
         changeContentModeForSmallDevices(forButton: echoButton)
         changeContentModeForSmallDevices(forButton: reverbButton)
         changeContentModeForSmallDevices(forButton: stopButton)
+        
+        setupAudio()
+        
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super .viewWillAppear(animated)
+        configureUI(.notPlaying)
+    }
 
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
